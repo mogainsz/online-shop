@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Bienvenue a la Botique Cassee</title>
+    <link href="malt523.css" rel="stylesheet"  type="text/css"/>
+    <script language="javascript" type="text/javascript" src="malt523.js"></script>
+	
+	
+</head>
+<body>
+    
+   <div style="padding-bottom:6%;">
+    <ul class="mainmenu">
+	
+        <li class="mainmenu selected" onclick="changeTab('Home', 'selHome')" id="selHome">Home</li>
+		
+        <li class="mainmenu" onclick="changeTab('books', 'selBooks')" id="selBooks">Books</li>
+        <li class="mainmenu" onclick="changeTab('blurays', 'selBlurays')" id="selBlurays">Blurays</li>
+        <li class="mainmenu" onclick="changeTab('guestbook', 'selGuestbook'); reloadComments();" id="selGuestbook">Guest book</li>
+        <li class="mainmenu" onclick="changeTab('register', 'selRegister')" id="selRegister">Register</li>
+		<li class="mainmenu" onclick="changeTab('login', 'selLogin')" id="selLogin">Log In</li>
+		<li class="mainmenu" style="display:none; float:right"  onclick="logOut()" id="logoutO">Log out</li>
+		<li class="mainmenu" style="display:none; min-width:fit-content; text-align:right; float:right" id ="loggedUser"> </li>
+		
+        
+    </ul>
+	</div>
+    <br/>
+	 <center><img width="15%" src="http://localhost:8188/Service.svc/logo" /> </center>
+    <section id="Home">
+        <div class="home_div">
+            <h1 class="main_title">Bienvenue a la Botique Cassee</h1>
+            <p class="home_para">Welcome to New Zealand's leading book and bluray store. We pride ourselves on providing the best bargains in the country.</p>
+            <p class="home_para">Please feel free to check out what we have in store. You may even get more than what you bargained for.</p>
+            <center><img width="20%" src="https://i.imgur.com/EXnjdZF.png" /></center>
+            <p class="cr">&copy; All rights reserved</p>
+        </div>
+    </section>
+
+    <section id="books" style="display:none;">
+        <div style="text-align:center;">
+            <h1 class="main_title">Books</h1>
+            <label>Search:	</label><input type="text" oninput="search_book(document.getElementById('search_field').value)" id="search_field" class="search_input" placeholder="Enter book name...">
+        </div>
+
+        <br />
+
+
+        <div class="contentDiv">
+            <ul id="show_books" class="list"></ul>
+        </div>
+    </section>
+
+    <section id="blurays" style="display:none;">
+        <div style="text-align:center;">
+            <h1 class="main_title">Blurays</h1>
+            <label>Search:	</label><input type="text" oninput="search_bluray(document.getElementById('brsearch_field').value)" id="brsearch_field" class="search_input" placeholder="Enter movie name...">
+        </div>
+
+        <br />
+
+
+        <div class="contentDiv">
+            <ul id="show_blurays" class="list"></ul>
+        </div>
+    </section>
+
+    
+
+    <section id="guestbook" style="display:none;">
+        <h1 class="main_title">Guest book</h1>
+			<p class="inputLabel" style="padding-left:10%;">Recent Entries:</p>
+        <center><iframe src="http://localhost:8188/Service.svc/htmlcomments" class="comments" id="comments_window">parent.document.body.innerHTML = "red";</iframe></center>
+        <div class="guestDiv">
+			<form onsubmit="postComment(document.getElementById('pName').value); return false;">
+			<p class="inputLabel">Name: </p>
+            <input type="text" placeholder="Enter your name..." class="input" id="pName" />
+            <br />
+			<p class="inputLabel">Comment: </p>
+            <textarea class="comment_box" id="comment" placeholder="Enter your comment..."></textarea>
+            
+            <input type="submit" class="comment_button" value="Post comment"/>
+			</form>
+			
+        </div>
+
+	
+    </section>
+
+    <section id="register" style="display:none;">
+        <h1 class="main_title">Join us!</h1>
+        <div class="divBackground">
+			<form onsubmit="register();return false;">
+			<p class="inputLabel">Address: </p>
+            <input type="text" placeholder="Enter your address..." id="address" class="reg_input" />
+            <br />
+			<p class="inputLabel">Name: </p>
+            <input type="text" placeholder="Enter your name..."  id="name" class="reg_input" />
+            <br />
+			<p class="inputLabel">Password: </p>
+            <input type="password" placeholder="Enter your password..."  id="password" class="reg_input"/>
+            
+            <input type="submit" class="button" value="Register"/>
+			</form>
+        </div>
+    </section>
+	
+	 <section id="login" style="display:none;">
+        <h1 class="main_title">Log In</h1>
+        <div class="divBackground" >
+		<form onsubmit="LogIn(document.getElementById('lName').value, document.getElementById('lPassword').value);return false;">
+			<p class="invalid" id ="invalidCred"> </p>
+			<br />
+			<p class="inputLabel">Name: </p>
+            <input type="text" placeholder="Enter your name..." id="lName" class="reg_input" oninput="removeMessage()" />
+            <br />
+			<p class="inputLabel">Password: </p>
+            <input type="password" placeholder="Enter your password..."  id="lPassword" class="reg_input" oninput="removeMessage()"/>
+            
+            <input type="submit" class="button" value="Log in" id="logInB"/>
+			</form>
+        </div>
+    </section>
+    
+	
+  
+</body>
+</html>

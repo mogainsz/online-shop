@@ -1,0 +1,321 @@
+﻿
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+	margin:0;
+	
+	
+}
+
+.buy_button {
+    background-color:#ce0000;
+    width: 200px;
+    height: 50px;
+    border: 0;
+    color: black;
+    display: block;
+    margin: 20px auto;
+	margin-bottom:0;
+    
+    font-weight: bold;
+    color: white;
+    
+}
+.buy_button:hover{
+    background-color:#08308e;
+	
+}
+
+ul.list {
+	list-style-type: none;
+
+	padding: 0;
+	overflow: hidden;
+	width: 100%;
+	margin-left:1%;
+	
+}
+
+li.list {
+    width: 200px;
+	
+	margin-right:2%;
+	margin-bottom:2%;
+	
+	
+    display: inline-block;
+    
+	border:1px solid #3a8fff;
+	
+    
+    font-weight: bold;
+    color:#1059ff;
+    
+}
+
+li p.list {
+    border-bottom: 0.5px;
+    border-bottom-style: solid;
+    border-bottom-color: cadetblue;
+}
+
+ul.mainmenu {
+    list-style-type: none;
+	margin:0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #ce0000;
+    width: 100%;
+	border-bottom:1px solid white;
+	position:fixed;
+	
+
+}
+
+li.mainmenu {
+    float: left;
+    min-width: 6%;
+    padding: 15px 15px;
+    display: inline-block;
+    text-align: center;
+    user-select: none;
+    cursor: default;
+    
+    color:white;
+
+}
+
+li.mainmenu:hover {
+        background-color: darkred;
+		
+		
+ }
+ 
+
+	
+.selected{
+	 background-color: darkred;
+	
+	 
+}
+
+.search_input {
+    
+    width: 30%;
+	
+     
+	border:1px solid #3a8fff;
+	padding-left:1%;
+	border-radius:15px;
+	color:#1059ff;
+	font-size:16px;
+	
+	
+	
+}
+
+.search_input:hover{
+	border-color:red;
+}
+
+.search_input:focus{
+	border-color:red;
+}
+
+.main_title {
+    text-align: center;
+    color: #ce0000;
+	width:85%;
+    border-bottom-style: solid;
+	margin-left:8%;
+	margin-bottom:3%;
+    
+}
+
+
+
+.home_para {
+   
+    color: #3a8fff;
+	
+	text-align:center;
+}
+
+.home_div {
+    height: 700px;
+}
+
+.cr {
+    
+    color: #3a8fff;
+    border-top-style: solid;
+    border-top-color: #3a8fff;
+    text-align: center;
+    margin-left:25%;
+    margin-right:25%;
+}
+
+.comment_box {
+   height:200px;
+    display: block;
+    width: 80%;
+	padding-top:1%;
+	outline:0;
+	padding-left:1%;
+    border: 1px solid #3a8fff;
+	border-radius:25px;
+	color: #3a8fff;
+	font-size:16px;
+
+}
+
+.comment_box:hover{
+    border-color:red;
+}
+
+.comment_box:focus{
+    border-color:red;
+}
+
+.comments {
+    width: 80%;
+    height: 400px;
+    border:1px solid #3a8fff;
+    margin-top: 10px;
+    border-radius:15px;
+	content-align:center;
+}
+
+.input {
+    height:50px;
+    display: block;
+    width: 80%;
+	
+	outline:0;
+	padding-left:1%;
+    border: 1px solid #3a8fff;
+	border-radius:25px;
+	color: #1059ff;
+	font-size:16px;
+}
+
+.input:hover{
+    border-color:red;
+}
+
+.input:focus{
+    border-color:red;
+}
+
+.comment_button {
+    background-color: #ce0000;
+    width: 150px;
+    height: 50px;
+    border: 0;
+    color: black;
+    
+    margin: 20px auto;
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.comment_button:hover {
+        background-color: #08308e;
+		color:white;
+    }
+
+.divBackground {
+    width: 40%;
+  
+    border-radius:25px;
+
+    
+    margin: 0 auto;
+
+    padding-left: 9%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+
+.reg_input {
+    height:50px;
+    display: block;
+    width: 80%;
+	
+	outline:0;
+	padding-left:1%;
+    border: 1px solid #3a8fff;
+	border-radius:25px;
+	color: #3a8fff;
+	font-size:16px;
+    
+}
+
+.button {
+   
+    background-color: #ce0000;
+    width: 150px;
+    height: 50px;
+    border: 0;
+    color: black;
+    
+    margin: 20px auto;
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.button:hover {
+        background-color: #08308e;
+		color:white;
+    }
+
+.reg_input:hover{
+    border-color:red;
+}
+
+.reg_input:focus{
+    border-color:red;
+}
+
+.guestDiv {
+    width: 50%;
+	
+    
+    margin: 0 auto;
+    padding-top: 2%;
+    padding-bottom: 2%;
+	padding-right:0px;
+	 border-radius:25px;
+	padding-left:9%;
+}
+
+label{
+	color:#3a8fff;
+	font-size:20px
+	
+
+}
+
+.contentDiv {
+	text-align:center;
+}
+
+.inputLabel{
+	font-size:20px;
+	color:#3a8fff;
+	padding-left:1%;
+	display:inline;
+}
+
+.invalid{
+	font-size:20px;
+	color:#ce0000;
+	margin-left:19%;
+	display:inline;
+	
+}
+
+

